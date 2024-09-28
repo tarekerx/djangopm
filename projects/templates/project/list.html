@@ -2,8 +2,8 @@
 <h3>{% trans "My project" %}</h3>
 
 <ul>
-  {% for i in project_lis %}
-  <li>{{i.title}}</li>
+  {% for i in project_list %}
+  <li>{{i.title}} - <a href="{% url "project_update" i.id %}">Edit</a></li>
   {% empty%}
   <li>{% trans "there os no projects to show" %}</li>
   {% endfor %}

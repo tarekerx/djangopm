@@ -1,0 +1,9 @@
+{%load i18n%} {% block content %}
+<form method = "post">
+    {% csrf_token %}
+    {{form}}
+    are you sure you want to delete it
+    <br>
+    <input type="submit">
+</form>
+{% endblock content %}
