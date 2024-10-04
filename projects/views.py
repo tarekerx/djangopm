@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView,DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from . import models
 from . import forms
 from django.urls import reverse_lazy, reverse
@@ -10,6 +10,16 @@ class project_list_view(ListView):
     model = models.Project
     context_object_name = "project_list"
     template_name = "project/list.html"
+    paginate_by = 6
+    def get_queryset(self):
+        query_set =super().get_queryset()
+        where = {}
+        q = self.request.GET.get("q",None)
+        if q: 
+            where["title__icontains"] = q
+        return query_set.filter(**where)
+            
+    
 
 
 class project_create_view(CreateView):
@@ -46,16 +56,17 @@ class tSK_UPDATE_VIEW(UpdateView):
     def get_success_url(self) -> str:
         return reverse("project_update", args=[self.object.project.id])
 
+
 class tSK_DELETE_VIEW(DeleteView):
     model = models.Task
 
-
     def get_success_url(self) -> str:
         return reverse("project_update", args=[self.object.project.id])
-    
+
+
 class project_delete_view(DeleteView):
     model = models.Project
     template_name = "project/delete.html"
-    
+
     def get_success_url(self) -> str:
         return reverse("project_list")
