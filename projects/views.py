@@ -3,10 +3,11 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from . import models
 from . import forms
 from django.urls import reverse_lazy, reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 
-class project_list_view(ListView):
+class project_list_view(LoginRequiredMixin,ListView):
     model = models.Project
     context_object_name = "project_list"
     template_name = "project/list.html"
@@ -22,14 +23,14 @@ class project_list_view(ListView):
     
 
 
-class project_create_view(CreateView):
+class project_create_view(LoginRequiredMixin,CreateView):
     model = models.Project
     form_class = forms.project_create_Form
     template_name = "project/create_project.html"
     success_url = reverse_lazy("project_list")
 
 
-class project_update_view(UpdateView):
+class project_update_view(LoginRequiredMixin,UpdateView):
     model = models.Project
     form_class = forms.project_update_form
     template_name = "project/update.html"
@@ -39,7 +40,7 @@ class project_update_view(UpdateView):
         return reverse("project_update", args=[self.object.id])
 
 
-class task_create_view(CreateView):
+class task_create_view(LoginRequiredMixin,CreateView):
     model = models.Task
     fields = ["project", "description"]
     http_method_names = ["post"]
@@ -48,7 +49,7 @@ class task_create_view(CreateView):
         return reverse("project_update", args=[self.object.project.id])
 
 
-class tSK_UPDATE_VIEW(UpdateView):
+class tSK_UPDATE_VIEW(LoginRequiredMixin,UpdateView):
     model = models.Task
     fields = ["is_completed"]
     http_method_names = ["post"]
@@ -57,14 +58,14 @@ class tSK_UPDATE_VIEW(UpdateView):
         return reverse("project_update", args=[self.object.project.id])
 
 
-class tSK_DELETE_VIEW(DeleteView):
+class tSK_DELETE_VIEW(LoginRequiredMixin,DeleteView):
     model = models.Task
 
     def get_success_url(self) -> str:
         return reverse("project_update", args=[self.object.project.id])
 
 
-class project_delete_view(DeleteView):
+class project_delete_view(LoginRequiredMixin,DeleteView):
     model = models.Project
     template_name = "project/delete.html"
 
