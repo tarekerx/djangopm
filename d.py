@@ -11,7 +11,7 @@ spam_count = 100
 message = "sad"
 
 # Optional: Set the typing interval to make it faster
-pyautogui.PAUSE = 0.01  # Reduce the pause between actions
+pyautogui.PAUSE = 0.001  # Reduce the pause between actions
 
 for _ in range(spam_count):
     pyautogui.write(message)  # Type the message
