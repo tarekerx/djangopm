@@ -15,7 +15,7 @@
 
 <div class = "row">
   <div class="col-md-3">
-    <form action="POST">
+    <form method="POST">
       <div class = "card">
         <div class = "class-body">
           {% csrf_token %}
@@ -36,10 +36,10 @@
                 <i class="bi bi-save"></i>
                 {% trans "Save" %}
               </button>
-              <button class = "btn btn-danger" >
+              <a class="btn btn-danger" href="{% url 'project_delete' object.id %}">
                 <i class="bi bi-trash"></i>
-                {% trans "Delete" %}
-              </button>
+                {% trans 'Delete' %}
+              </a>
             </div>
           </div>
         </div>
