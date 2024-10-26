@@ -21,18 +21,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'True'
 
 
-
-
-ALLOWED_HOSTS = ["your-app-name.onrender.com"]  # Replace with your actual Render URL
-
+# Replace with your actual Render URL
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -45,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "projects",
-    "accounts",'django.contrib.humanize',
+    "accounts", 'django.contrib.humanize',
     "debug_toolbar"
 ]
 
@@ -82,21 +80,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'projectsmanager.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': "testb_b3aj",
-        "USER": "testb_b3aj_user",
-        "PASSWORD": "IT8po19RI0H5H7XxdpQOSozD4m50R2cI",
-        "HOST": "dpg-csdpdupu0jms73a7fdi0-a.oregon-postgres.render.com",
-        "PORT": "5432"
     }
 }
+# Database
+# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+database_url = os.environ.get("DATABASE_URL")
+DATABASES["default"] = dj_database_url.parse(database_url)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -134,8 +127,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS  =[os.path.join(BASE_DIR,"static")]
-STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -144,6 +137,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/accounts/login"
-INTERNAL_IPS =[
+INTERNAL_IPS = [
     "127.0.0.1"
 ]
